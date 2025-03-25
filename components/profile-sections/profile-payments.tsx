@@ -134,10 +134,9 @@ export function ProfilePayments() {
     });
   };
 
-  const getCardIcon = (cardType: string) => {
-    // In a real app, you would use actual card brand SVGs
+  /*const getCardIcon = (cardType: string) => {
     return <CreditCard className="h-5 w-5" />;
-  };
+  };*/
 
   return (
     <div className="space-y-6">
@@ -258,7 +257,7 @@ export function ProfilePayments() {
               <div className="flex justify-between items-start">
                 <div className="flex items-center gap-2">
                   <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                    {getCardIcon(method.cardType)}
+                    {/*getCardIcon(method.cardType)}*/}
                   </div>
                   <CardTitle className="text-lg">{method.name}</CardTitle>
                 </div>

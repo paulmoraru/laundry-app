@@ -20,12 +20,13 @@ import type {
   BookingFormState,
   BookingFiltersState,
   LockerSize,
+  LockerLocation,
 } from "./booking-page-content";
 
 interface BookingFormProps {
   formData: BookingFormState;
   onFormChange: (data: Partial<BookingFormState>) => void;
-  selectedLocation: any;
+  selectedLocation: LockerLocation | null;
   filters: BookingFiltersState;
   onFiltersChange: (filters: Partial<BookingFiltersState>) => void;
 }

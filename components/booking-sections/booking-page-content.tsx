@@ -37,10 +37,11 @@ export const LOCKER_LOCATIONS = [
     lng: 26.0956,
     availableLockers: 5,
     isOpen24Hours: false,
-    lockerSizes: ["small", "medium"],
+    lockerSizes: ["small", "medium", "large"],
     pricing: {
       small: 5.99,
       medium: 8.99,
+      large: 10.99,
     },
   },
 ];
@@ -63,6 +64,22 @@ export interface BookingFormState {
   estimatedWeight: number;
   specialInstructions: string;
   useStoredPayment: boolean;
+}
+
+export interface LockerLocation {
+  id: number;
+  name: string;
+  address: string;
+  lat: number;
+  lng: number;
+  availableLockers: number;
+  isOpen24Hours: boolean;
+  lockerSizes: string[];
+  pricing: {
+    small: number;
+    medium: number;
+    large: number;
+  } | null;
 }
 
 export function BookingPageContent() {
@@ -168,7 +185,7 @@ export function BookingPageContent() {
     if (!selectedLocation || !filters.lockerSize) return 0;
 
     const basePrice = selectedLocation.pricing[filters.lockerSize];
-    let total: number = basePrice;
+    let total: number = basePrice || 0;
 
     // Adăugare taxă pentru tip serviciu
     if (filters.serviceType === "dry_clean") {

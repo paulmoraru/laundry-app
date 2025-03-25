@@ -14,7 +14,21 @@ import type {
 import { Check, CreditCard, MapPin } from "lucide-react";
 
 interface BookingSummaryProps {
-  selectedLocation: any;
+  selectedLocation: {
+    id: number;
+    name: string;
+    address: string;
+    lat: number;
+    lng: number;
+    availableLockers: number;
+    isOpen24Hours: boolean;
+    lockerSizes: string[];
+    pricing: {
+      small: number;
+      medium: number;
+      large: number;
+    } | null;
+  } | null;
   filters: BookingFiltersState;
   formData: BookingFormState;
   price: number;
@@ -85,10 +99,18 @@ export function BookingSummary({
                 <div className="flex items-start gap-2">
                   <MapPin className="h-5 w-5 text-primary mt-0.5" />
                   <div>
-                    <p className="font-medium">{selectedLocation?.name}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {selectedLocation?.address}
-                    </p>
+                    {selectedLocation ? (
+                      <>
+                        <p className="font-medium">{selectedLocation.name}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {selectedLocation.address}
+                        </p>
+                      </>
+                    ) : (
+                      <p className="text-sm text-muted-foreground">
+                        No location selected
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>

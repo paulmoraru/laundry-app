@@ -18,6 +18,11 @@ interface Location {
   availableLockers: number; // dulapuri disponibile
   isOpen24Hours: boolean; // deschis 24 ore
   lockerSizes: string[]; // dimensiuni dulapuri
+  pricing: {
+    small: number;
+    medium: number;
+    large: number;
+  } | null;
 }
 
 interface BookingMapProps {
@@ -29,7 +34,7 @@ interface BookingMapProps {
 // Declare google variable
 declare global {
   interface Window {
-    google: any;
+    google: typeof google;
   }
 }
 
