@@ -21,6 +21,19 @@ import {
   Clock,
 } from "lucide-react";
 
+interface Order {
+  id: string;
+  date: string;
+  status: string;
+  items: string;
+  total: string;
+  dropoffDate: string;
+  dropoffTime: string;
+  pickupDate: string;
+  pickupTime: string;
+  location: string;
+}
+
 export function ProfileOrders() {
   const [orderTab, setOrderTab] = useState("upcoming");
 
@@ -134,7 +147,7 @@ export function ProfileOrders() {
     }
   };
 
-  const OrderCard = ({ order }: { order: any }) => (
+  const OrderCard = ({ order }: { order: Order }) => (
     <Card className="hover-scale">
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
