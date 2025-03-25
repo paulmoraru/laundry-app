@@ -11,9 +11,9 @@ export function Header() {
 
   const navigationItems = [
     { name: "Acasă", href: "/" },
-    { name: "Servicii", href: "/services" },
-    { name: "Prețuri", href: "/pricing" },
-    { name: "Easybox", href: "/book-locker" },
+    { name: "Servicii", href: "/servicii" },
+    { name: "Prețuri", href: "/preturi" },
+    { name: "Easybox", href: "/easybox" },
     { name: "Contact", href: "/contact" },
   ];
 
@@ -41,10 +41,10 @@ export function Header() {
 
         <div className="hidden md:flex gap-4">
           <Button variant="ghost" asChild>
-            <Link href="/login">Autentificare</Link>
+            <Link href="/autentificare">Autentificare</Link>
           </Button>
           <Button asChild>
-            <Link href="/signup">Înregistrare</Link>
+            <Link href="/inregistrare">Înregistrare</Link>
           </Button>
         </div>
 

@@ -51,7 +51,7 @@ export function Footer() {
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
-                  href="/services"
+                  href="/servicii"
                   className="text-muted-foreground hover:text-primary"
                 >
                   Spălare și Împăturire
@@ -59,7 +59,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/services"
+                  href="/servicii"
                   className="text-muted-foreground hover:text-primary"
                 >
                   Curățare Chimică
@@ -67,7 +67,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/services"
+                  href="/servicii"
                   className="text-muted-foreground hover:text-primary"
                 >
                   Serviciu Express
@@ -75,7 +75,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/pricing"
+                  href="/preturi"
                   className="text-muted-foreground hover:text-primary"
                 >
                   Prețuri
