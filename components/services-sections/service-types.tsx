@@ -161,7 +161,7 @@ export function ServiceTypes() {
 
         <div className="mt-12 text-center">
           <Button asChild size="lg">
-            <Link href="/pricing">Vezi Lista de Prețuri</Link>
+            <Link href="/preturi">Vezi Lista de Prețuri</Link>
           </Button>
         </div>
       </div>

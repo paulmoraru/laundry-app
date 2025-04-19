@@ -10,10 +10,13 @@ import { useToast } from "@/hooks/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/auth-context";
+import { api } from "@/lib/fetch-utils";
 
 export function LoginForm() {
   const { toast } = useToast();
   const router = useRouter();
+  const { login } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -34,17 +37,44 @@ export function LoginForm() {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate authentication
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      const response = await fetch("http://localhost:8000/api/login", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        })
+      });
 
-    // For demo purposes, always succeed
-    toast({
-      title: "Autentificare reușită!",
-      description: "Bine ai revenit la FreshPress.",
-    });
+      if (!response.ok) {
+        throw new Error('Login failed');
+      }
 
-    // Redirect to dashboard
-    router.push("/");
+      const data = await response.json();
+      
+      // Store the token using our auth context
+      login(data.token);
+
+      toast({
+        title: "Autentificare reușită!",
+        description: "Bine ai revenit la FreshPress.",
+      });
+
+      // Redirect to dashboard
+      router.push("/");
+    } catch (error) {
+      toast({
+        title: "Eroare de autentificare",
+        description: "Email sau parolă incorectă. Te rugăm să încerci din nou.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -89,7 +119,7 @@ export function LoginForm() {
               required
             />
           </div>
-          <div className="flex items-center space-x-2 my-2">
+          <div className="flex items-center space-x-2">
             <Checkbox
               id="remember-me"
               checked={formData.rememberMe}
@@ -103,28 +133,10 @@ export function LoginForm() {
             </label>
           </div>
           <Button type="submit" disabled={isLoading} className="mt-2">
-            {isLoading ? "Se înregistrează..." : "Se înregistrează"}
+            {isLoading ? "Se autentifică..." : "Autentificare"}
           </Button>
         </div>
       </form>
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t" />
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-2 text-muted-foreground">
-            Sau înregistrează-te
-          </span>
-        </div>
-      </div>
-      <div className="grid grid-cols-2 gap-4">
-        <Button variant="outline" disabled={isLoading}>
-          Google
-        </Button>
-        <Button variant="outline" disabled={isLoading}>
-          Apple
-        </Button>
-      </div>
     </div>
   );
 }

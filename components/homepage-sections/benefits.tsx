@@ -55,7 +55,7 @@ export function Benefits() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="relative h-[500px] rounded-xl overflow-hidden shadow-lg order-2 lg:order-1">
             <Image
-              src="/placeholder.svg?height=500&width=600"
+              src="/img/benefits.png"
               alt="imagine"
               fill
               className="object-cover"

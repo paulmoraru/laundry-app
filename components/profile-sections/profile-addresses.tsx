@@ -141,27 +141,27 @@ export function ProfileAddresses() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">My Addresses</h2>
+        <h2 className="text-2xl font-bold">Adresele Mele</h2>
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
             <Button className="gap-2">
               <Plus className="h-4 w-4" />
-              Add Address
+              Adaugă Adresă
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[500px]">
             <DialogHeader>
-              <DialogTitle>Add New Address</DialogTitle>
+              <DialogTitle>Adaugă Adresă Nouă</DialogTitle>
               <DialogDescription>
-                Add a new address to your account for delivery and pickup.
+                Adaugă o nouă adresă în contul tău pentru livrare și ridicare.
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid gap-2">
-                <Label htmlFor="name">Address Name</Label>
+                <Label htmlFor="name">Nume Adresă</Label>
                 <Input
                   id="name"
-                  placeholder="Home, Office, etc."
+                  placeholder="Acasă, Birou, etc."
                   value={newAddress.name}
                   onChange={(e) =>
                     setNewAddress({ ...newAddress, name: e.target.value })
@@ -169,10 +169,10 @@ export function ProfileAddresses() {
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="line1">Address Line 1</Label>
+                <Label htmlFor="line1">Adresa Linia 1</Label>
                 <Input
                   id="line1"
-                  placeholder="Street address"
+                  placeholder="Strada și numărul"
                   value={newAddress.line1}
                   onChange={(e) =>
                     setNewAddress({ ...newAddress, line1: e.target.value })
@@ -180,10 +180,10 @@ export function ProfileAddresses() {
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="line2">Address Line 2 (Optional)</Label>
+                <Label htmlFor="line2">Adresa Linia 2 (Opțional)</Label>
                 <Input
                   id="line2"
-                  placeholder="Apartment, suite, unit, etc."
+                  placeholder="Apartament, etaj, bloc, etc."
                   value={newAddress.line2}
                   onChange={(e) =>
                     setNewAddress({ ...newAddress, line2: e.target.value })
@@ -192,10 +192,10 @@ export function ProfileAddresses() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="city">City</Label>
+                  <Label htmlFor="city">Oraș</Label>
                   <Input
                     id="city"
-                    placeholder="City"
+                    placeholder="Oraș"
                     value={newAddress.city}
                     onChange={(e) =>
                       setNewAddress({ ...newAddress, city: e.target.value })
@@ -203,10 +203,10 @@ export function ProfileAddresses() {
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="state">State</Label>
+                  <Label htmlFor="state">Județ</Label>
                   <Input
                     id="state"
-                    placeholder="State"
+                    placeholder="Județ"
                     value={newAddress.state}
                     onChange={(e) =>
                       setNewAddress({ ...newAddress, state: e.target.value })
@@ -215,10 +215,10 @@ export function ProfileAddresses() {
                 </div>
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="zip">ZIP Code</Label>
+                <Label htmlFor="zip">Cod Poștal</Label>
                 <Input
                   id="zip"
-                  placeholder="ZIP Code"
+                  placeholder="Cod Poștal"
                   value={newAddress.zip}
                   onChange={(e) =>
                     setNewAddress({ ...newAddress, zip: e.target.value })
@@ -226,7 +226,7 @@ export function ProfileAddresses() {
                 />
               </div>
               <div className="grid gap-2">
-                <Label>Address Type</Label>
+                <Label>Tip Adresă</Label>
                 <div className="flex gap-4">
                   <div className="flex items-center gap-2">
                     <input
@@ -239,7 +239,7 @@ export function ProfileAddresses() {
                       }
                     />
                     <Label htmlFor="type-home" className="font-normal">
-                      Home
+                      Acasă
                     </Label>
                   </div>
                   <div className="flex items-center gap-2">
@@ -253,7 +253,7 @@ export function ProfileAddresses() {
                       }
                     />
                     <Label htmlFor="type-work" className="font-normal">
-                      Work
+                      Birou
                     </Label>
                   </div>
                   <div className="flex items-center gap-2">
@@ -267,7 +267,7 @@ export function ProfileAddresses() {
                       }
                     />
                     <Label htmlFor="type-other" className="font-normal">
-                      Other
+                      Altele
                     </Label>
                   </div>
                 </div>
@@ -287,7 +287,7 @@ export function ProfileAddresses() {
                   htmlFor="default"
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  Set as default address
+                  Setează ca adresă principală
                 </label>
               </div>
             </div>
@@ -296,9 +296,9 @@ export function ProfileAddresses() {
                 variant="outline"
                 onClick={() => setIsAddDialogOpen(false)}
               >
-                Cancel
+                Anulează
               </Button>
-              <Button onClick={handleAddAddress}>Save Address</Button>
+              <Button onClick={handleAddAddress}>Salvează Adresa</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -316,7 +316,7 @@ export function ProfileAddresses() {
                   <CardTitle className="text-lg">{address.name}</CardTitle>
                 </div>
                 {address.isDefault && (
-                  <Badge variant="secondary">Default</Badge>
+                  <Badge variant="secondary">Principal</Badge>
                 )}
               </div>
             </CardHeader>
@@ -337,7 +337,7 @@ export function ProfileAddresses() {
                 onClick={() => handleDeleteAddress(address.id)}
               >
                 <Trash className="h-4 w-4" />
-                Remove
+                Șterge
               </Button>
               <div className="flex gap-2">
                 {!address.isDefault && (
@@ -346,12 +346,12 @@ export function ProfileAddresses() {
                     size="sm"
                     onClick={() => handleSetDefault(address.id)}
                   >
-                    Set as Default
+                    Setează ca Principal
                   </Button>
                 )}
                 <Button variant="outline" size="sm" className="gap-1">
                   <Edit className="h-4 w-4" />
-                  Edit
+                  Editează
                 </Button>
               </div>
             </CardFooter>
@@ -362,11 +362,11 @@ export function ProfileAddresses() {
       {addresses.length === 0 && (
         <div className="text-center py-12 border rounded-lg bg-muted/20">
           <MapPin className="h-10 w-10 text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-lg font-medium mb-2">No addresses saved</h3>
+          <h3 className="text-lg font-medium mb-2">Nu există adrese salvate</h3>
           <p className="text-muted-foreground mb-6">
-            Add an address to make ordering easier.
+            Adaugă o adresă pentru a face comenzile mai ușoare.
           </p>
-          <Button onClick={() => setIsAddDialogOpen(true)}>Add Address</Button>
+          <Button onClick={() => setIsAddDialogOpen(true)}>Adaugă Adresă</Button>
         </div>
       )}
     </div>

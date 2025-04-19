@@ -106,8 +106,8 @@ export function ProfilePayments() {
     setIsAddDialogOpen(false);
 
     toast({
-      title: "Payment method added",
-      description: "Your new payment method has been saved.",
+      title: "Metoda de plată adăugată",
+      description: "Metoda de plată nouă a fost salvată.",
     });
   };
 
@@ -115,8 +115,8 @@ export function ProfilePayments() {
     setPaymentMethods(paymentMethods.filter((method) => method.id !== id));
 
     toast({
-      title: "Payment method removed",
-      description: "The payment method has been removed from your account.",
+      title: "Metoda de plată ștearsă",
+      description: "Metoda de plată a fost eliminată din contul tău.",
     });
   };
 
@@ -129,8 +129,8 @@ export function ProfilePayments() {
     );
 
     toast({
-      title: "Default payment method updated",
-      description: "Your default payment method has been updated.",
+      title: "Metoda de plată principală actualizată",
+      description: "Metoda de plată principală a fost actualizată.",
     });
   };
 
@@ -141,24 +141,24 @@ export function ProfilePayments() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Payment Methods</h2>
+        <h2 className="text-2xl font-bold">Metode de Plată</h2>
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
             <Button className="gap-2">
               <Plus className="h-4 w-4" />
-              Add Payment Method
+              Adaugă Metodă de Plată
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[500px]">
             <DialogHeader>
-              <DialogTitle>Add Payment Method</DialogTitle>
+              <DialogTitle>Adaugă Metodă de Plată</DialogTitle>
               <DialogDescription>
-                Add a new credit or debit card to your account.
+                Adaugă un card nou de credit sau debit în contul tău.
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid gap-2">
-                <Label htmlFor="cardNumber">Card Number</Label>
+                <Label htmlFor="cardNumber">Număr Card</Label>
                 <Input
                   id="cardNumber"
                   placeholder="1234 5678 9012 3456"
@@ -172,10 +172,10 @@ export function ProfilePayments() {
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="cardholderName">Cardholder Name</Label>
+                <Label htmlFor="cardholderName">Numele Titularului</Label>
                 <Input
                   id="cardholderName"
-                  placeholder="Name as it appears on card"
+                  placeholder="Numele așa cum apare pe card"
                   value={newPaymentMethod.cardholderName}
                   onChange={(e) =>
                     setNewPaymentMethod({
@@ -187,10 +187,10 @@ export function ProfilePayments() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="expiryDate">Expiry Date</Label>
+                  <Label htmlFor="expiryDate">Data Expirării</Label>
                   <Input
                     id="expiryDate"
-                    placeholder="MM/YY"
+                    placeholder="LL/AA"
                     value={newPaymentMethod.expiryDate}
                     onChange={(e) =>
                       setNewPaymentMethod({
@@ -201,7 +201,7 @@ export function ProfilePayments() {
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="cvv">CVV</Label>
+                  <Label htmlFor="cvv">Cod CVV</Label>
                   <Input
                     id="cvv"
                     placeholder="123"
@@ -231,7 +231,7 @@ export function ProfilePayments() {
                   htmlFor="default-payment"
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  Set as default payment method
+                  Setează ca metodă de plată principală
                 </label>
               </div>
             </div>
@@ -240,10 +240,10 @@ export function ProfilePayments() {
                 variant="outline"
                 onClick={() => setIsAddDialogOpen(false)}
               >
-                Cancel
+                Anulează
               </Button>
               <Button onClick={handleAddPaymentMethod}>
-                Save Payment Method
+                Salvează Metoda de Plată
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -261,13 +261,13 @@ export function ProfilePayments() {
                   </div>
                   <CardTitle className="text-lg">{method.name}</CardTitle>
                 </div>
-                {method.isDefault && <Badge variant="secondary">Default</Badge>}
+                {method.isDefault && <Badge variant="secondary">Principal</Badge>}
               </div>
             </CardHeader>
             <CardContent className="pb-2">
               <div className="space-y-1 text-sm">
                 <p className="font-mono">{method.cardNumber}</p>
-                <p>Expires: {method.expiryDate}</p>
+                <p>Expiră: {method.expiryDate}</p>
               </div>
             </CardContent>
             <CardFooter className="pt-2 flex justify-between">
@@ -278,7 +278,7 @@ export function ProfilePayments() {
                 onClick={() => handleDeletePaymentMethod(method.id)}
               >
                 <Trash className="h-4 w-4" />
-                Remove
+                Șterge
               </Button>
               <div className="flex gap-2">
                 {!method.isDefault && (
@@ -287,12 +287,12 @@ export function ProfilePayments() {
                     size="sm"
                     onClick={() => handleSetDefault(method.id)}
                   >
-                    Set as Default
+                    Setează ca Principal
                   </Button>
                 )}
                 <Button variant="outline" size="sm" className="gap-1">
                   <Edit className="h-4 w-4" />
-                  Edit
+                  Editează
                 </Button>
               </div>
             </CardFooter>
@@ -303,12 +303,12 @@ export function ProfilePayments() {
       {paymentMethods.length === 0 && (
         <div className="text-center py-12 border rounded-lg bg-muted/20">
           <CreditCard className="h-10 w-10 text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-lg font-medium mb-2">No payment methods</h3>
+          <h3 className="text-lg font-medium mb-2">Nu există metode de plată</h3>
           <p className="text-muted-foreground mb-6">
-            Add a payment method to make checkout faster.
+            Adaugă o metodă de plată pentru a face plata mai rapidă.
           </p>
           <Button onClick={() => setIsAddDialogOpen(true)}>
-            Add Payment Method
+            Adaugă Metodă de Plată
           </Button>
         </div>
       )}

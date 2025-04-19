@@ -24,10 +24,10 @@ export function ProfileTabs() {
         value={activeTab}
       >
         <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8">
-          <TabsTrigger value="orders">Orders</TabsTrigger>
-          <TabsTrigger value="addresses">Addresses</TabsTrigger>
-          <TabsTrigger value="payments">Payment Methods</TabsTrigger>
-          <TabsTrigger value="settings">Account Settings</TabsTrigger>
+          <TabsTrigger value="orders">Comenzi</TabsTrigger>
+          <TabsTrigger value="addresses">Adrese</TabsTrigger>
+          <TabsTrigger value="payments">Metode de Plată</TabsTrigger>
+          <TabsTrigger value="settings">Setări Cont</TabsTrigger>
         </TabsList>
 
         <TabsContent value="orders" className="space-y-4">

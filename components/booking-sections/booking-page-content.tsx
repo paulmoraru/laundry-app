@@ -207,7 +207,7 @@ export function BookingPageContent() {
 
     // Redirecționare către tabloul de bord după o scurtă întârziere
     setTimeout(() => {
-      router.push("/my-profile");
+      router.push("/profilul-meu");
     }, 2000);
   };
 

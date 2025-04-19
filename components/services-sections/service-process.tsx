@@ -23,7 +23,7 @@ export function ServiceProcess() {
         "Uscare la temperaturi adecvate",
         "Împăturire și ambalare profesională",
       ],
-      image: "/placeholder.svg?height=400&width=600",
+      image: "/img/services-process1.png",
     },
     {
       id: "dry-cleaning",
@@ -37,7 +37,7 @@ export function ServiceProcess() {
         "Călcare și finisare",
         "Verificarea calității și ambalare",
       ],
-      image: "/placeholder.svg?height=400&width=600",
+      image: "/img/services-process2.png",
     },
     {
       id: "specialty",
@@ -51,7 +51,7 @@ export function ServiceProcess() {
         "Tehnici atente de uscare",
         "Finisare și ambalare specializată",
       ],
-      image: "/placeholder.svg?height=400&width=600",
+      image: "/img/services-process3.png",
     },
   ];
 
@@ -105,7 +105,7 @@ export function ServiceProcess() {
                   src={process.image || "/placeholder.svg"}
                   alt={`${process.title} process`}
                   fill
-                  className="object-cover"
+                  className="object-fill"
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
               </div>

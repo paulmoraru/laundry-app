@@ -29,7 +29,7 @@ export function Testimonials() {
     {
       name: "Maria Popescu",
       role: "Consultant",
-      image: "/placeholder.svg?height=100&width=100",
+      image: "/img/testimonial3.png",
       quote:
         "FreshPress mi-a schimbat complet rutina. Las hainele în drum spre serviciu și le ridic la întoarcere. Totul este perfect curat și frumos împăturit. E ca și cum aș avea un asistent personal pentru spălătorie!",
       rating: 5,
@@ -37,7 +37,7 @@ export function Testimonials() {
     {
       name: "Ionescu Ion",
       role: "IT Consultant",
-      image: "/placeholder.svg?height=100&width=100",
+      image: "/img/testimonial1.png",
       quote:
         "Cu trei copii, spălatul rufelor îmi ocupa tot weekendul. Acum las totul vineri și ridic hainele curate și proaspete luni. Calitatea este uimitoare, iar confortul este și mai bun.",
       rating: 5,
@@ -45,15 +45,15 @@ export function Testimonials() {
     {
       name: "Alex Popescu",
       role: "Student la Master",
-      image: "/placeholder.svg?height=100&width=100",
+      image: "/img/testimonial2.png",
       quote:
         "Viața într-un apartament mic fără facilități de spălătorie era o provocare până am descoperit FreshPress. Dulapurile inteligente sunt la doar un bloc distanță, iar aplicația face programările super ușoare. Recomand cu căldură!",
       rating: 4,
     },
     {
-      name: "Emilia Popescu",
+      name: "Emil Lăzărescu",
       role: "Antreprenor",
-      image: "/placeholder.svg?height=100&width=100",
+      image: "/img/testimonial4.png",
       quote:
         "Ca persoană care își conduce propria afacere, fiecare minut contează. FreshPress îmi oferă timp prețios și se asigură că am mereu haine curate și profesionale. Atenția lor la detalii este impresionantă.",
       rating: 5,

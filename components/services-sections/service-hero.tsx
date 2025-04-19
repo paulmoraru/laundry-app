@@ -33,7 +33,7 @@ export function ServiceHero() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Button asChild size="lg">
-              <Link href="/pricing">Vezi Prețurile</Link>
+              <Link href="/preturi">Vezi Prețurile</Link>
             </Button>
             <Button variant="outline" size="lg" asChild>
               <Link href="#service-types">Explorează Serviciile</Link>
@@ -42,7 +42,7 @@ export function ServiceHero() {
         </div>
         <div className="relative h-[300px] md:h-[400px] rounded-xl overflow-hidden shadow-lg">
           <Image
-            src="/placeholder.svg?height=400&width=600"
+            src="/img/services-hero-image.png"
             alt="Serviciu de spălătorie profesional"
             fill
             className="object-cover"

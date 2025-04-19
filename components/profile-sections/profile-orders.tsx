@@ -112,7 +112,7 @@ export function ProfileOrders() {
             variant="outline"
             className="bg-blue-50 text-blue-700 hover:bg-blue-50 border-blue-200"
           >
-            <Clock className="mr-1 h-3 w-3" /> Scheduled
+            <Clock className="mr-1 h-3 w-3" /> Programat
           </Badge>
         );
       case "processing":
@@ -121,7 +121,7 @@ export function ProfileOrders() {
             variant="outline"
             className="bg-amber-50 text-amber-700 hover:bg-amber-50 border-amber-200"
           >
-            <Truck className="mr-1 h-3 w-3" /> Processing
+            <Truck className="mr-1 h-3 w-3" /> În Procesare
           </Badge>
         );
       case "completed":
@@ -130,7 +130,7 @@ export function ProfileOrders() {
             variant="outline"
             className="bg-green-50 text-green-700 hover:bg-green-50 border-green-200"
           >
-            <CheckCircle className="mr-1 h-3 w-3" /> Completed
+            <CheckCircle className="mr-1 h-3 w-3" /> Finalizat
           </Badge>
         );
       case "cancelled":
@@ -139,7 +139,7 @@ export function ProfileOrders() {
             variant="outline"
             className="bg-red-50 text-red-700 hover:bg-red-50 border-red-200"
           >
-            <AlertCircle className="mr-1 h-3 w-3" /> Cancelled
+            <AlertCircle className="mr-1 h-3 w-3" /> Anulat
           </Badge>
         );
       default:
@@ -161,7 +161,7 @@ export function ProfileOrders() {
       <CardContent className="pb-2">
         <div className="grid gap-2">
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Items:</span>
+            <span className="text-muted-foreground">Articole:</span>
             <span className="font-medium">{order.items}</span>
           </div>
           <div className="flex justify-between text-sm">
@@ -169,7 +169,7 @@ export function ProfileOrders() {
             <span className="font-medium">{order.total}</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Location:</span>
+            <span className="text-muted-foreground">Locație:</span>
             <span className="font-medium">{order.location}</span>
           </div>
 
@@ -177,7 +177,7 @@ export function ProfileOrders() {
             <div className="flex items-start gap-2 text-sm">
               <Calendar className="h-4 w-4 mt-0.5 text-primary" />
               <div>
-                <p className="font-medium">Drop-off: {order.dropoffDate}</p>
+                <p className="font-medium">Predare: {order.dropoffDate}</p>
                 <p className="text-muted-foreground">{order.dropoffTime}</p>
               </div>
             </div>
@@ -185,7 +185,7 @@ export function ProfileOrders() {
             <div className="flex items-start gap-2 text-sm">
               <Package className="h-4 w-4 mt-0.5 text-primary" />
               <div>
-                <p className="font-medium">Pick-up: {order.pickupDate}</p>
+                <p className="font-medium">Ridicare: {order.pickupDate}</p>
                 <p className="text-muted-foreground">{order.pickupTime}</p>
               </div>
             </div>
@@ -194,7 +194,7 @@ export function ProfileOrders() {
       </CardContent>
       <CardFooter className="pt-2">
         <Button variant="outline" size="sm" className="w-full">
-          View Details
+          Vezi Detalii
         </Button>
       </CardFooter>
     </Card>
@@ -203,8 +203,8 @@ export function ProfileOrders() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">My Orders</h2>
-        <Button>Place New Order</Button>
+        <h2 className="text-2xl font-bold">Comenzile Mele</h2>
+        <Button>Plasează Comandă Nouă</Button>
       </div>
 
       <Tabs
@@ -213,8 +213,8 @@ export function ProfileOrders() {
         value={orderTab}
       >
         <TabsList>
-          <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
-          <TabsTrigger value="past">Past Orders</TabsTrigger>
+          <TabsTrigger value="upcoming">Următoare</TabsTrigger>
+          <TabsTrigger value="past">Comenzi Anterioare</TabsTrigger>
         </TabsList>
 
         <TabsContent value="upcoming" className="mt-6">
@@ -226,11 +226,11 @@ export function ProfileOrders() {
             </div>
           ) : (
             <div className="text-center py-12">
-              <h3 className="text-lg font-medium mb-2">No upcoming orders</h3>
+              <h3 className="text-lg font-medium mb-2">Nu există comenzi viitoare</h3>
               <p className="text-muted-foreground mb-6">
-                You don&apos;t have any upcoming orders at the moment.
+                Nu aveți nicio comandă programată în acest moment.
               </p>
-              <Button>Place an Order</Button>
+              <Button>Plasează o Comandă</Button>
             </div>
           )}
         </TabsContent>
@@ -244,9 +244,9 @@ export function ProfileOrders() {
             </div>
           ) : (
             <div className="text-center py-12">
-              <h3 className="text-lg font-medium mb-2">No order history</h3>
+              <h3 className="text-lg font-medium mb-2">Nu există istoric comenzi</h3>
               <p className="text-muted-foreground">
-                You haven&apos;t placed any orders yet.
+                Nu ați plasat încă nicio comandă.
               </p>
             </div>
           )}

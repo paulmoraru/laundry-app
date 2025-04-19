@@ -56,10 +56,10 @@ export function HeroSection() {
         </div>
         <div className="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-lg">
           <Image
-            src="/placeholder.svg?height=500&width=600"
+            src="/img/hero-image.png"
             alt="imagine"
             fill
-            className="object-cover"
+            className="object-fill"
             sizes="(max-width: 768px) 100vw, 50vw"
             priority
           />

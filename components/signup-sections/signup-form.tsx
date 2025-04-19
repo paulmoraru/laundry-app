@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useRouter } from "next/navigation";
+import { api } from "@/lib/fetch-utils";
 
 export function SignupForm() {
   const { toast } = useToast();
@@ -65,17 +66,33 @@ export function SignupForm() {
 
     setIsLoading(true);
 
-    // Simulate account creation
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      const response = await api.post("http://localhost:8000/api/register", {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+      });
 
-    toast({
-      title: "Cont creat!",
-      description:
-        "Bine ai revenit la FreshPress. Acum poți să te autentifici.",
-    });
+      if (!response.ok) {
+        throw new Error('Registration failed');
+      }
 
-    // Redirect to login
-    router.push("/autentificare");
+      toast({
+        title: "Cont creat!",
+        description: "Bine ai revenit la FreshPress. Acum poți să te autentifici.",
+      });
+
+      // Redirect to login
+      router.push("/autentificare");
+    } catch (error) {
+      toast({
+        title: "Eroare la înregistrare",
+        description: "A apărut o eroare. Te rugăm să încerci din nou.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -149,7 +166,7 @@ export function SignupForm() {
               </p>
             )}
           </div>
-          <div className="flex items-center space-x-2 my-2">
+          <div className="flex items-center space-x-2">
             <Checkbox
               id="terms"
               checked={formData.agreeTerms}
@@ -175,28 +192,10 @@ export function SignupForm() {
             disabled={isLoading || !formData.agreeTerms}
             className="mt-2"
           >
-            {isLoading ? "Se înregistrează..." : "Se înregistrează"}
+            {isLoading ? "Se înregistrează..." : "Înregistrare"}
           </Button>
         </div>
       </form>
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t" />
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-2 text-muted-foreground">
-            Sau înregistrează-te
-          </span>
-        </div>
-      </div>
-      <div className="grid grid-cols-2 gap-4">
-        <Button variant="outline" disabled={isLoading}>
-          Google
-        </Button>
-        <Button variant="outline" disabled={isLoading}>
-          Apple
-        </Button>
-      </div>
     </div>
   );
 }
