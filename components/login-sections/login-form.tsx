@@ -38,16 +38,9 @@ export function LoginForm() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8000/api/login", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-        })
+      const response = await api.post("http://localhost:8000/api/login", {
+        email: formData.email,
+        password: formData.password,
       });
 
       if (!response.ok) {
@@ -56,7 +49,6 @@ export function LoginForm() {
 
       const data = await response.json();
       
-      // Store the token using our auth context
       login(data.token);
 
       toast({
@@ -64,7 +56,6 @@ export function LoginForm() {
         description: "Bine ai revenit la FreshPress.",
       });
 
-      // Redirect to dashboard
       router.push("/");
     } catch (error) {
       toast({
