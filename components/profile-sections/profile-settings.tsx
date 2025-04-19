@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Separator } from "@/components/ui/separator"
 import { useToast } from "@/hooks/use-toast"
-import { Bell, Mail, Phone, Shield, LogOut, Trash2 } from "lucide-react"
+import { Bell, Mail, Phone, Shield, LogOut } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context";
 import { api } from "@/lib/fetch-utils"
 import { useRouter } from "next/navigation";
@@ -91,13 +91,13 @@ export function ProfileSettings() {
       }
 
       toast({
-        title: "Profile updated",
-        description: "Your profile information has been saved.",
+        title: "Profil actualizat",
+        description: "Informațiile tale au fost salvate cu succes.",
       });
     } catch (error) {
       toast({
-        title: "Error updating profile",
-        description: "Failed to update profile. Please try again.",
+        title: "Eroare la actualizare",
+        description: "Nu am putut actualiza profilul. Te rugăm să încerci din nou.",
         variant: "destructive",
       });
     } finally {
@@ -113,16 +113,16 @@ export function ProfileSettings() {
       setIsUpdating(false);
 
       toast({
-        title: "Notification preferences updated",
-        description: "Your notification preferences have been saved.",
+        title: "Preferințe notificări actualizate",
+        description: "Preferințele tale de notificări au fost salvate.",
       });
     }, 1000);
   };
 
   const handleChangePassword = () => {
     toast({
-      title: "Password reset email sent",
-      description: "Check your email for instructions to reset your password.",
+      title: "Email de resetare parolă trimis",
+      description: "Verifică-ți emailul pentru instrucțiuni de resetare a parolei.",
     });
   };
 
@@ -133,12 +133,12 @@ export function ProfileSettings() {
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.message || 'Failed to delete account');
+        throw new Error(error.message || 'Nu am putut șterge contul');
       }
 
       toast({
-        title: "Account deleted",
-        description: "Your account has been successfully deleted.",
+        title: "Cont șters",
+        description: "Contul tău a fost șters cu succes.",
       });
 
       logout();
@@ -146,8 +146,8 @@ export function ProfileSettings() {
     } catch (error) {
       console.error('Error deleting account:', error);
       toast({
-        title: "Error deleting account",
-        description: error instanceof Error ? error.message : "Failed to delete account. Please try again.",
+        title: "Eroare la ștergerea contului",
+        description: error instanceof Error ? error.message : "Nu am putut șterge contul. Te rugăm să încerci din nou.",
         variant: "destructive",
       });
     } finally {
@@ -371,7 +371,7 @@ export function ProfileSettings() {
             onClick={() => setIsDeleteModalOpen(true)}
             disabled={isDeleting}
           >
-            Șterge Contul
+            {isDeleting ? "Se șterge..." : "Șterge Contul"}
           </Button>
         </CardFooter>
       </Card>

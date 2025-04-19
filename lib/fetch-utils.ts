@@ -16,18 +16,14 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
     headers,
   });
 
-  // Handle 401 Unauthorized responses
   if (response.status === 401) {
-    // Clear the invalid token
     localStorage.removeItem('auth_token');
-    // You might want to redirect to login page or handle unauthorized access
     throw new Error('Unauthorized access');
   }
 
   return response;
 }
 
-// Example usage with different HTTP methods
 export const api = {
   get: async (url: string) => {
     return fetchWithAuth(url, {
