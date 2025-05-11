@@ -41,8 +41,8 @@ export function HeroSection() {
                 className="w-full rounded-md border border-input px-4 py-2.5 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               />
             </div>
-            <Button size="lg" className="gap-2 px-6" asChild>
-              <Link href="/book-locker">
+            <Button size="lg" className="gap-2 h-[46px] px-6" asChild>
+              <Link href="/easybox">
                 Rezervați Acum
                 <ArrowRight className="h-4 w-4" />
               </Link>

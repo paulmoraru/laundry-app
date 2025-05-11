@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -21,7 +21,9 @@ import type {
   BookingFiltersState,
   LockerSize,
   LockerLocation,
+  ServiceType,
 } from "./booking-page-content";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface BookingFormProps {
   formData: BookingFormState;
@@ -40,6 +42,14 @@ export function BookingForm({
 }: BookingFormProps) {
   const [dropoffCalendarOpen, setDropoffCalendarOpen] = useState(false);
   const [pickupCalendarOpen, setPickupCalendarOpen] = useState(false);
+
+  // Update weight when locker size changes
+  useEffect(() => {
+    const maxWeight = filters.lockerSize === "large" ? 15 : filters.lockerSize === "medium" ? 10 : 5;
+    if (formData.estimatedWeight > maxWeight) {
+      onFormChange({ estimatedWeight: maxWeight });
+    }
+  }, [filters.lockerSize, formData.estimatedWeight, onFormChange]);
 
   // Intervale orare
   const timeSlots = [
@@ -76,66 +86,74 @@ export function BookingForm({
                 }
                 className="grid grid-cols-1 sm:grid-cols-3 gap-4"
               >
-                <div className="flex flex-col items-center space-y-2 border rounded-lg p-4 cursor-pointer hover:border-primary/50 transition-colors">
-                  <RadioGroupItem
-                    value="small"
-                    id="size-small-form"
-                    className="sr-only"
-                  />
-                  <Label
-                    htmlFor="size-small-form"
-                    className="cursor-pointer text-center"
-                  >
-                    <span className="block text-lg font-medium">Mic</span>
-                    <span className="block text-sm text-muted-foreground">
-                      Până la 5 kg
-                    </span>
-                    <span className="block mt-2 text-primary font-medium">
-                      {selectedLocation?.pricing?.small?.toFixed(2) || "4.99"}{" "}
-                      lei /zi
-                    </span>
-                  </Label>
-                </div>
-                <div className="flex flex-col items-center space-y-2 border rounded-lg p-4 cursor-pointer hover:border-primary/50 transition-colors">
-                  <RadioGroupItem
-                    value="medium"
-                    id="size-medium-form"
-                    className="sr-only"
-                  />
-                  <Label
-                    htmlFor="size-medium-form"
-                    className="cursor-pointer text-center"
-                  >
-                    <span className="block text-lg font-medium">Mediu</span>
-                    <span className="block text-sm text-muted-foreground">
-                      Până la 10 kg
-                    </span>
-                    <span className="block mt-2 text-primary font-medium">
-                      {selectedLocation?.pricing?.medium?.toFixed(2) || "7.99"}{" "}
-                      lei /zi
-                    </span>
-                  </Label>
-                </div>
-                <div className="flex flex-col items-center space-y-2 border rounded-lg p-4 cursor-pointer hover:border-primary/50 transition-colors">
-                  <RadioGroupItem
-                    value="large"
-                    id="size-large-form"
-                    className="sr-only"
-                  />
-                  <Label
-                    htmlFor="size-large-form"
-                    className="cursor-pointer text-center"
-                  >
-                    <span className="block text-lg font-medium">Mare</span>
-                    <span className="block text-sm text-muted-foreground">
-                      Până la 15 kg
-                    </span>
-                    <span className="block mt-2 text-primary font-medium">
-                      {selectedLocation?.pricing?.large?.toFixed(2) || "9.99"}{" "}
-                      lei /zi
-                    </span>
-                  </Label>
-                </div>
+                {selectedLocation?.lockerSizes.includes("small") && (
+                  <div className="flex flex-col items-center space-y-2 border rounded-lg p-4 cursor-pointer hover:border-primary/50 transition-colors">
+                    <RadioGroupItem
+                      value="small"
+                      id="size-small-form"
+                      className="sr-only"
+                    />
+                    <Label
+                      htmlFor="size-small-form"
+                      className="cursor-pointer text-center"
+                    >
+                      <span className="block text-lg font-medium">Mic</span>
+                      <span className="block text-sm text-muted-foreground">
+                        Până la 5 kg
+                      </span>
+                      <span className="block mt-2 text-primary font-medium">
+                        {selectedLocation?.pricing?.small?.toFixed(2)}{" "}
+                        lei
+                      </span>
+                    </Label>
+                  </div>
+                )}
+
+                {selectedLocation?.lockerSizes.includes("medium") && (
+                  <div className="flex flex-col items-center space-y-2 border rounded-lg p-4 cursor-pointer hover:border-primary/50 transition-colors">
+                    <RadioGroupItem
+                      value="medium"
+                      id="size-medium-form"
+                      className="sr-only"
+                    />
+                    <Label
+                      htmlFor="size-medium-form"
+                      className="cursor-pointer text-center"
+                    >
+                      <span className="block text-lg font-medium">Mediu</span>
+                      <span className="block text-sm text-muted-foreground">
+                        Până la 10 kg
+                      </span>
+                      <span className="block mt-2 text-primary font-medium">
+                        {selectedLocation?.pricing?.medium?.toFixed(2)}{" "}
+                        lei
+                      </span>
+                    </Label>
+                  </div>
+                )}
+
+                {selectedLocation?.lockerSizes.includes("large") && (
+                  <div className="flex flex-col items-center space-y-2 border rounded-lg p-4 cursor-pointer hover:border-primary/50 transition-colors">
+                    <RadioGroupItem
+                      value="large"
+                      id="size-large-form"
+                      className="sr-only"
+                    />
+                    <Label
+                      htmlFor="size-large-form"
+                      className="cursor-pointer text-center"
+                    >
+                      <span className="block text-lg font-medium">Mare</span>
+                      <span className="block text-sm text-muted-foreground">
+                        Până la 15 kg
+                      </span>
+                      <span className="block mt-2 text-primary font-medium">
+                        {selectedLocation?.pricing?.large?.toFixed(2)}{" "}
+                        lei
+                      </span>
+                    </Label>
+                  </div>
+                )}
               </RadioGroup>
             </div>
 
@@ -277,44 +295,94 @@ export function BookingForm({
             <div className="space-y-4">
               <h3 className="text-lg font-medium">Detalii Rufe</h3>
 
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <Label htmlFor="estimated-weight">
-                    Greutate Estimata (kg)
-                  </Label>
-                  <span className="text-sm font-medium">
-                    {formData.estimatedWeight} kg
-                  </span>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Servicii</Label>
+                  <div className="space-y-4">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="wash_fold"
+                        checked={true}
+                        disabled
+                      />
+                      <Label htmlFor="wash_fold" className="cursor-pointer">
+                        Spălare și împăturire (inclus în preț)
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="dry_clean"
+                        checked={filters.serviceType === "dry_clean" || filters.serviceType === "both"}
+                        onCheckedChange={(checked) =>
+                          onFiltersChange({ 
+                            serviceType: checked ? 
+                              (filters.serviceType === "both" ? "both" : "dry_clean") : 
+                              (filters.serviceType === "both" ? "wash_fold" : "wash_fold")
+                          })
+                        }
+                      />
+                      <Label htmlFor="dry_clean" className="cursor-pointer">
+                        Curățare Chimică (+20 Lei)
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="ironing"
+                        checked={filters.serviceType === "both"}
+                        onCheckedChange={(checked) =>
+                          onFiltersChange({ 
+                            serviceType: checked ? 
+                              (filters.serviceType === "dry_clean" ? "both" : "wash_fold") : 
+                              (filters.serviceType === "both" ? "dry_clean" : "wash_fold")
+                          })
+                        }
+                      />
+                      <Label htmlFor="ironing" className="cursor-pointer">
+                        Împăturire Specială (+20 Lei)
+                      </Label>
+                    </div>
+                  </div>
                 </div>
-                <Slider
-                  id="estimated-weight"
-                  min={1}
-                  max={15}
-                  step={1}
-                  value={[formData.estimatedWeight]}
-                  onValueChange={(value) =>
-                    onFormChange({ estimatedWeight: value[0] })
-                  }
-                />
-                <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>1 kg</span>
-                  <span>15 kg</span>
-                </div>
-              </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="special-instructions">
-                  Instrucțiuni Speciale (Opțional)
-                </Label>
-                <Textarea
-                  id="special-instructions"
-                  placeholder="Orice instrucțiuni specifice pentru gestionarea rufei"
-                  value={formData.specialInstructions}
-                  onChange={(e) =>
-                    onFormChange({ specialInstructions: e.target.value })
-                  }
-                  rows={3}
-                />
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <Label htmlFor="estimated-weight">
+                      Greutate Estimata (kg)
+                    </Label>
+                    <span className="text-sm font-medium">
+                      {formData.estimatedWeight} kg
+                    </span>
+                  </div>
+                  <Slider
+                    id="estimated-weight"
+                    min={1}
+                    max={filters.lockerSize === "large" ? 15 : filters.lockerSize === "medium" ? 10 : 5}
+                    step={1}
+                    value={[formData.estimatedWeight]}
+                    onValueChange={(value) =>
+                      onFormChange({ estimatedWeight: value[0] })
+                    }
+                  />
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>1 kg</span>
+                    <span>{filters.lockerSize === "large" ? "15" : filters.lockerSize === "medium" ? "10" : "5"} kg</span>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="special-instructions">
+                    Instrucțiuni Speciale (Opțional)
+                  </Label>
+                  <Textarea
+                    id="special-instructions"
+                    placeholder="Orice instrucțiuni specifice pentru gestionarea rufei"
+                    value={formData.specialInstructions}
+                    onChange={(e) =>
+                      onFormChange({ specialInstructions: e.target.value })
+                    }
+                    rows={3}
+                  />
+                </div>
               </div>
             </div>
           </div>

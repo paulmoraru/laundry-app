@@ -77,14 +77,8 @@ export function BookingSummary({
     }, 1500);
   };
 
-  // Calculare taxă de serviciu
-  const serviceFee = 2.99;
-
-  // Calculare TVA
-  const tax = (price + serviceFee) * 0.19; // 19% TVA
-
   // Calculare total
-  const total = price + serviceFee + tax;
+  const total = price + (selectedLocation?.pricing?.[filters.lockerSize as keyof typeof selectedLocation.pricing] || 0);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -162,7 +156,7 @@ export function BookingSummary({
                   <div className="flex justify-between">
                     <p className="text-sm">Dimensiune Dulap</p>
                     <p className="text-sm font-medium capitalize">
-                      {filters.lockerSize || "Nespecificat"}
+                      {filters.lockerSize === "small" ? "Mic" : filters.lockerSize === "medium" ? "Mediu" : "Mare"}
                     </p>
                   </div>
 
@@ -264,20 +258,15 @@ export function BookingSummary({
             <CardContent className="p-6 space-y-4">
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <p className="text-sm">Taxă Serviciu</p>
+                  <p className="text-sm">Servicii curățare</p>
                   <p className="text-sm font-medium">{price.toFixed(2)} lei</p>
                 </div>
 
                 <div className="flex justify-between">
                   <p className="text-sm">Taxă Procesare</p>
                   <p className="text-sm font-medium">
-                    {serviceFee.toFixed(2)} lei
+                    {selectedLocation?.pricing?.[filters.lockerSize as keyof typeof selectedLocation.pricing]?.toFixed(2) || 0} lei
                   </p>
-                </div>
-
-                <div className="flex justify-between">
-                  <p className="text-sm">TVA</p>
-                  <p className="text-sm font-medium">{tax.toFixed(2)} lei</p>
                 </div>
               </div>
 

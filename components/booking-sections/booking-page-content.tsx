@@ -11,40 +11,9 @@ import { Separator } from "@/components/ui/separator";
 import { Steps, Step } from "@/components/ui/steps";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import { api } from "@/lib/fetch-utils";
 
-// Date mock pentru locațiile dulapurilor - într-o aplicație reală, acestea ar veni de la un API
-export const LOCKER_LOCATIONS = [
-  {
-    id: 1,
-    name: "Dulapuri Centru",
-    address: "Strada Principală 123, București",
-    lat: 44.4268,
-    lng: 26.1025,
-    availableLockers: 8,
-    isOpen24Hours: true,
-    lockerSizes: ["small", "medium", "large"],
-    pricing: {
-      small: 4.99,
-      medium: 7.99,
-      large: 9.99,
-    },
-  },
-  {
-    id: 2,
-    name: "Dulapuri Victoriei",
-    address: "Calea Victoriei 456, București",
-    lat: 44.4377,
-    lng: 26.0956,
-    availableLockers: 5,
-    isOpen24Hours: false,
-    lockerSizes: ["small", "medium", "large"],
-    pricing: {
-      small: 5.99,
-      medium: 8.99,
-      large: 10.99,
-    },
-  },
-];
+
 
 export type LockerSize = "small" | "medium" | "large";
 export type ServiceType = "wash_fold" | "dry_clean" | "both";
@@ -93,9 +62,8 @@ export function BookingPageContent() {
 
   // State pentru rezervare
   const [currentStep, setCurrentStep] = useState(1);
-  const [selectedLocationId, setSelectedLocationId] = useState<number | null>(
-    null
-  );
+  const [selectedLocationId, setSelectedLocationId] = useState<number | null>(null);
+  const [locations, setLocations] = useState<LockerLocation[]>([]);
   const [filters, setFilters] = useState<BookingFiltersState>({
     lockerSize: null,
     serviceType: "wash_fold",
@@ -108,23 +76,47 @@ export function BookingPageContent() {
     dropoffTime: "",
     pickupDate: null,
     pickupTime: "",
-    estimatedWeight: 10,
+    estimatedWeight: 5,
     specialInstructions: "",
     useStoredPayment: true,
   });
 
   const [isLoading, setIsLoading] = useState(true);
 
+  // Fetch locations
   useEffect(() => {
-    setIsLoading(false);
-  }, []);
+    const fetchLocations = async () => {
+      try {
+        const response = await api.get('http://localhost:8000/api/locations');
+        if (!response.ok) {
+          throw new Error('Failed to fetch locations');
+        }
+        const data = await response.json();
+        const locationsArray = Array.isArray(data.data) ? data.data : [];
+        console.log(locationsArray);
+        setLocations(locationsArray);
+      } catch (error) {
+        console.error('Error fetching locations:', error);
+        toast({
+          title: "Error loading locations",
+          description: "Failed to load locker locations. Please try again.",
+          variant: "destructive",
+        });
+        setLocations([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchLocations();
+  }, [toast]);
 
   if (isLoading) {
     return <div className="container py-8">Se încarcă...</div>;
   }
 
   // Filtrare locații în funcție de filtrele selectate
-  const filteredLocations = LOCKER_LOCATIONS.filter((location) => {
+  const filteredLocations = locations.filter((location) => {
     // Filtrare după dimensiunea dulapului
     if (
       filters.lockerSize &&
@@ -147,11 +139,13 @@ export function BookingPageContent() {
   });
 
   const selectedLocation = selectedLocationId
-    ? LOCKER_LOCATIONS.find((loc) => loc.id === selectedLocationId) || null
+    ? locations.find((loc) => loc.id === selectedLocationId) || null
     : null;
 
   const handleLocationSelect = (locationId: number) => {
     setSelectedLocationId(locationId);
+    // Reset locker size when selecting a new location
+    setFilters(prev => ({ ...prev, lockerSize: null }));
 
     // If we're on step 1, move to step 2 after selecting a location
     if (currentStep === 1) {
@@ -169,6 +163,15 @@ export function BookingPageContent() {
 
   const handleNextStep = () => {
     if (currentStep < 3) {
+      // Add validation for step 2
+      if (currentStep === 2 && !filters.lockerSize) {
+        toast({
+          title: "Selectează o dimensiune",
+          description: "Te rugăm să selectezi dimensiunea dulapului înainte de a continua.",
+          variant: "destructive",
+        });
+        return;
+      }
       setCurrentStep((prev) => prev + 1);
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
@@ -184,31 +187,97 @@ export function BookingPageContent() {
   const calculatePrice = (): number => {
     if (!selectedLocation || !filters.lockerSize) return 0;
 
-    const basePrice = selectedLocation.pricing[filters.lockerSize];
-    let total: number = basePrice || 0;
+    // Preț de bază: 20 Lei/kg
+    const basePricePerKg = 20;
+    let total: number = basePricePerKg * formData.estimatedWeight;
 
-    // Adăugare taxă pentru tip serviciu
+    // Adăugare preț pentru servicii opționale
     if (filters.serviceType === "dry_clean") {
-      total += 5.0;
+      total += 20; // Preț fix pentru curățare chimică
     } else if (filters.serviceType === "both") {
-      total += 7.5;
+      total += 40; // Preț fix pentru ambele servicii opționale
     }
 
     return total;
   };
 
-  const handleSubmitBooking = () => {
-    // Într-o aplicație reală, aici s-ar trimite rezervarea către un API
-    toast({
-      title: "Rezervare confirmată!",
-      description:
-        "Dulapul tău a fost rezervat. Verifică-ți emailul pentru detalii.",
-    });
+  const prepareBookingData = () => {
+    if (!selectedLocation || !formData.dropoffDate || !formData.pickupDate) return null;
 
-    // Redirecționare către tabloul de bord după o scurtă întârziere
-    setTimeout(() => {
-      router.push("/profilul-meu");
-    }, 2000);
+    return {
+      location: {
+        id: selectedLocation.id,
+        name: selectedLocation.name,
+        address: selectedLocation.address
+      },
+      locker: {
+        size: filters.lockerSize,
+        maxWeight: filters.lockerSize === "large" ? 15 : filters.lockerSize === "medium" ? 10 : 5
+      },
+      services: {
+        base: "wash_fold",
+        additional: {
+          dryCleaning: filters.serviceType === "dry_clean" || filters.serviceType === "both",
+          specialIroning: filters.serviceType === "both"
+        }
+      },
+      schedule: {
+        dropoff: {
+          date: formData.dropoffDate.toISOString(),
+          timeSlot: formData.dropoffTime
+        },
+        pickup: {
+          date: formData.pickupDate.toISOString(),
+          timeSlot: formData.pickupTime
+        }
+      },
+      details: {
+        weight: formData.estimatedWeight,
+        specialInstructions: formData.specialInstructions || null
+      },
+      pricing: {
+        basePrice: 20, // Lei per kg
+        totalWeight: formData.estimatedWeight,
+        additionalServices: {
+          dryCleaning: filters.serviceType === "dry_clean" || filters.serviceType === "both" ? 20 : 0,
+          specialIroning: filters.serviceType === "both" ? 20 : 0
+        },
+        total: calculatePrice()
+      }
+    };
+  };
+
+  const handleSubmitBooking = async () => {
+    const bookingData = prepareBookingData();
+    if (!bookingData) {
+      toast({
+        title: "Eroare",
+        description: "Vă rugăm să completați toate câmpurile obligatorii.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      // Într-o aplicație reală, aici s-ar trimite rezervarea către un API
+      console.log('Booking data:', bookingData);
+      
+      toast({
+        title: "Rezervare confirmată!",
+        description: "Dulapul tău a fost rezervat. Verifică-ți emailul pentru detalii.",
+      });
+
+      // Redirecționare către tabloul de bord după o scurtă întârziere
+      setTimeout(() => {
+        router.push("/profilul-meu");
+      }, 2000);
+    } catch (error) {
+      toast({
+        title: "Eroare",
+        description: "A apărut o eroare la procesarea rezervării. Vă rugăm să încercați din nou.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -240,8 +309,8 @@ export function BookingPageContent() {
             onFiltersChange={handleFiltersChange}
           />
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-1 space-y-4">
+          <div className="flex flex-col gap-8">
+            <div className="space-y-4">
               <h2 className="text-xl font-semibold">Locații Disponibile</h2>
               <p className="text-sm text-muted-foreground">
                 {filteredLocations.length} locații corespund criteriilor tale
@@ -251,48 +320,14 @@ export function BookingPageContent() {
                 locations={filteredLocations}
                 selectedLocationId={selectedLocationId}
                 onLocationSelect={handleLocationSelect}
+                filters={filters}
+                onResetFilters={() => setFilters({
+                  lockerSize: null,
+                  serviceType: "wash_fold",
+                  open24Hours: false,
+                  availableNow: false,
+                })}
               />
-            </div>
-
-            <div className="lg:col-span-2">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold">Selectează o Locație</h2>
-                {selectedLocationId && (
-                  <Button onClick={handleNextStep}>
-                    Continuă la Programare
-                  </Button>
-                )}
-              </div>
-
-              {selectedLocation && (
-                <div className="mb-6 p-4 border rounded-lg bg-primary/5 border-primary/20">
-                  <h3 className="font-medium">Locație Selectată</h3>
-                  <p className="text-sm">
-                    {selectedLocation.name} - {selectedLocation.address}
-                  </p>
-                </div>
-              )}
-
-              {filteredLocations.length === 0 ? (
-                <div className="text-center py-12 border rounded-lg">
-                  <p className="text-muted-foreground mb-4">
-                    Nicio locație nu corespunde filtrelor curente
-                  </p>
-                  <Button
-                    variant="outline"
-                    onClick={() =>
-                      setFilters({
-                        lockerSize: null,
-                        serviceType: "wash_fold",
-                        open24Hours: false,
-                        availableNow: false,
-                      })
-                    }
-                  >
-                    Resetează Filtrele
-                  </Button>
-                </div>
-              ) : null}
             </div>
           </div>
         </div>
@@ -385,7 +420,7 @@ export function BookingPageContent() {
                   <div>
                     <h3 className="font-medium mb-2">Preț Estimat</h3>
                     <p className="text-2xl font-bold">
-                      {calculatePrice().toFixed(2)} Lei
+                      {calculatePrice().toFixed(2) || 0} Lei
                     </p>
                     <p className="text-xs text-muted-foreground mt-1">
                       Prețul final poate varia în funcție de greutate și
