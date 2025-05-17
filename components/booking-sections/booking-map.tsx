@@ -21,6 +21,7 @@ interface Location {
   availableLockers: number; 
   isOpen24Hours: boolean; 
   lockerSizes: string[]; 
+  is_active: boolean;
   pricing: {
     small: number;
     medium: number;
@@ -120,7 +121,7 @@ export function BookingMap({
               key={location.id}
               position={{ lat: location.lat, lng: location.lng }}
               title={location.name}
-              opacity={location.availableLockers === 0 ? 0.5 : 1}
+              opacity={location.availableLockers === 0 || !location.is_active ? 0.5 : 1}
               onClick={() => {
                   setActiveInfoWindow(location.id);
               }}
@@ -129,15 +130,15 @@ export function BookingMap({
                 <InfoWindow onCloseClick={() => setActiveInfoWindow(null)}>
                   <div style={{ padding: 8, maxWidth: 200 }}>
                     <h3 style={{ margin: "0 0 8px", fontWeight: 600 }}>{location.name}</h3>
-                    <p style={{ margin: 0, color: location.availableLockers > 0 ? "#16a34a" : "#dc2626" }}>
-                      {location.availableLockers} dulapuri disponibile
+                    <p style={{ margin: 0, color: location.availableLockers > 0 && location.is_active ? "#16a34a" : "#dc2626" }}>
+                      {location.is_active ? location.availableLockers + " dulapuri disponibile" : "Locație închisă temporar"}
                     </p>
                     <Button className="mt-3" variant="outline" onClick={() => {
-                      if (location.availableLockers > 0) {
+                      if (location.availableLockers > 0 && location.is_active) {
                         onLocationSelect(location.id);
                       }
                     }}>
-                      {location.availableLockers > 0 ? "Selectează locație" : "Locație ocupată"}
+                      {!location.is_active ? "Locație închisă" : location.availableLockers > 0 ? "Selectează locație" : "Locație ocupată"}
                     </Button>
                   </div>
                 </InfoWindow>
@@ -158,11 +159,11 @@ export function BookingMap({
               className={`hover:border-primary/50 transition-all ${
                 selectedLocationId === location.id
                   ? "border-primary bg-primary/5"
-                  : location.availableLockers === 0
+                  : location.availableLockers === 0 || !location.is_active
                   ? "opacity-50 cursor-not-allowed"
                   : "cursor-pointer"
               }`}
-              onClick={() => location.availableLockers > 0 && onLocationSelect(location.id)}
+              onClick={() => location.availableLockers > 0 && location.is_active && onLocationSelect(location.id)}
             >
               <CardContent className="p-4">
                 <div className="flex justify-between items-start">
@@ -177,17 +178,16 @@ export function BookingMap({
                     <div className="flex items-center gap-2 mt-2">
                       <Badge
                         variant={
-                          location.availableLockers > 0 ? "outline" : "secondary"
+                          location.availableLockers > 0 && location.is_active ? "outline" : "secondary"
                         }
                         className={
-                          location.availableLockers > 0
+                          location.availableLockers > 0 && location.is_active
                             ? "bg-green-50 text-green-700 hover:bg-green-50 border-green-200"
                             : "bg-red-50 text-red-700 hover:bg-red-50 border-red-200"
                         }
                       >
-                        {location.availableLockers}{" "}
-                        {location.availableLockers === 1 ? "dulap" : "dulapuri"}{" "}
-                        disponibile
+                        {location.is_active && (location.availableLockers > 0 ? location.availableLockers + " dulapuri disponibile" : "0 dulapuri disponibile")}{" "}
+                        {!location.is_active ? "Închis temporar" : ""}
                       </Badge>
                       {location.isOpen24Hours && (
                         <Badge

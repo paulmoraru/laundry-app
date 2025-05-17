@@ -190,7 +190,7 @@ export function ProfileSettings() {
             <Label htmlFor="name">Nume Complet</Label>
             <Input
               id="name"
-              value={user?.name}
+              value={user?.name || ""}
               onChange={(e) => setUser({ ...user, name: e.target.value })}
             />
           </div>
@@ -199,7 +199,7 @@ export function ProfileSettings() {
             <Input
               id="email"
               type="email"
-              value={user?.email}
+              value={user?.email || ""}
               onChange={(e) => setUser({ ...user, email: e.target.value })}
             />
           </div>
@@ -208,7 +208,8 @@ export function ProfileSettings() {
             <Input
               id="phone"
               type="tel"
-              value={user?.phone_number}
+              value={user?.phone_number || ""}
+              placeholder="ex: 0722 123 456"
               onChange={(e) => setUser({ ...user, phone_number: e.target.value })}
             />
           </div>

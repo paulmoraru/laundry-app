@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -12,6 +12,7 @@ import type {
   BookingFormState,
 } from "./booking-page-content";
 import { Check, CreditCard, MapPin } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface BookingSummaryProps {
   selectedLocation: {
@@ -46,6 +47,7 @@ export function BookingSummary({
 }: BookingSummaryProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("saved");
+  const router = useRouter();
 
   // Metode de plată salvate
   const savedPaymentMethods = [
@@ -68,6 +70,11 @@ export function BookingSummary({
   ];
 
   const handleSubmit = () => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("auth_token") : null;
+    if (!token) {
+      router.push("/inregistrare");
+      return;
+    }
     setIsSubmitting(true);
 
     // Simulare procesare plată

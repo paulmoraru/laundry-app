@@ -49,6 +49,7 @@ export interface LockerLocation {
     medium: number;
     large: number;
   } | null;
+  is_active: boolean;
 }
 
 export function BookingPageContent() {
@@ -92,6 +93,7 @@ export function BookingPageContent() {
           throw new Error('Failed to fetch locations');
         }
         const data = await response.json();
+        console.log('Raw API response:', data);
         const locationsArray = Array.isArray(data.data) ? data.data : [];
         console.log(locationsArray);
         setLocations(locationsArray);
@@ -259,15 +261,18 @@ export function BookingPageContent() {
     }
 
     try {
-      // Într-o aplicație reală, aici s-ar trimite rezervarea către un API
-      console.log('Booking data:', bookingData);
-      
+      // Send booking data to the /orders endpoint
+      const response = await api.post('http://localhost:8000/api/orders', bookingData);
+
+      if (!response.ok) {
+        throw new Error('Order creation failed');
+      }
+
       toast({
         title: "Rezervare confirmată!",
         description: "Dulapul tău a fost rezervat. Verifică-ți emailul pentru detalii.",
       });
 
-      // Redirecționare către tabloul de bord după o scurtă întârziere
       setTimeout(() => {
         router.push("/profilul-meu");
       }, 2000);
