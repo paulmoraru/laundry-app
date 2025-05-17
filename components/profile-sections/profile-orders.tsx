@@ -89,7 +89,6 @@ export function ProfileOrders() {
         const response = await api.get("http://localhost:8000/api/orders");
         if (!response.ok) throw new Error("Failed to fetch orders");
         const data = await response.json();
-        console.log(data);
         const orders: Order[] = Array.isArray(data.data) ? data.data : [];
         // Normalize status to lowercase for filtering
         setUpcomingOrders(
