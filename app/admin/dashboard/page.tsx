@@ -8,10 +8,9 @@ import { Button } from "@/components/ui/button";
 interface Order {
   id: number;
   status: string;
-  // Add other fields as needed
 }
 
-const statuses = ["pending", "scheduled", "processing", "completed", "cancelled"];
+const statuses = ["Pending", "Scheduled", "Processing", "Completed", "Cancelled"];
 
 export default function AdminDashboard() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -67,24 +66,24 @@ export default function AdminDashboard() {
     );
   }
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div>Se încarcă...</div>;
 
   return (
     <div className="container py-8">
-      <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
+      <h1 className="text-2xl font-bold mb-6">Panou Administrare</h1>
       <table className="w-full border">
         <thead>
           <tr>
             <th>ID</th>
             <th>Status</th>
-            <th>Change Status</th>
+            <th>Schimbă Statusul</th>
           </tr>
         </thead>
         <tbody>
           {orders.map(order => (
             <tr key={order.id}>
               <td className="border px-2 py-1">{order.id}</td>
-              <td className="border px-2 py-1">{order.status}</td>
+              <td className="border px-2 py-1">{order.status === "Pending" ? "În așteptare" : order.status === "Scheduled" ? "Programat" : order.status === "Processing" ? "În curs" : order.status === "Completed" ? "Finalizat" : "Anulat"}</td>
               <td className="border px-2 py-1">
                 <select
                   value={order.status}
@@ -93,7 +92,7 @@ export default function AdminDashboard() {
                 >
                   {statuses.map(status => (
                     <option key={status} value={status}>
-                      {status}
+                      {status === "Pending" ? "În așteptare" : status === "Scheduled" ? "Programat" : status === "Processing" ? "În curs" : status === "Completed" ? "Finalizat" : "Anulat"}
                     </option>
                   ))}
                 </select>
