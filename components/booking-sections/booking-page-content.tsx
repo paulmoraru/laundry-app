@@ -200,11 +200,20 @@ export function BookingPageContent() {
       total += 40; // Preț fix pentru ambele servicii opționale
     }
 
+    // Adăugare taxă de procesare din pricing-ul locației
+    const processingFee = selectedLocation.pricing?.[filters.lockerSize as keyof typeof selectedLocation.pricing] || 0;
+    total += processingFee;
+
     return total;
   };
 
   const prepareBookingData = () => {
     if (!selectedLocation || !formData.dropoffDate || !formData.pickupDate) return null;
+
+    const basePrice = 20; // Lei per kg
+    const dryCleaningPrice = filters.serviceType === "dry_clean" || filters.serviceType === "both" ? 20 : 0;
+    const specialIroningPrice = filters.serviceType === "both" ? 20 : 0;
+    const processingFee = selectedLocation.pricing?.[filters.lockerSize as keyof typeof selectedLocation.pricing] || 0;
 
     return {
       location: {
@@ -238,13 +247,14 @@ export function BookingPageContent() {
         specialInstructions: formData.specialInstructions || null
       },
       pricing: {
-        basePrice: 20, // Lei per kg
+        basePrice: basePrice,
         totalWeight: formData.estimatedWeight,
         additionalServices: {
-          dryCleaning: filters.serviceType === "dry_clean" || filters.serviceType === "both" ? 20 : 0,
-          specialIroning: filters.serviceType === "both" ? 20 : 0
+          dryCleaning: dryCleaningPrice,
+          specialIroning: specialIroningPrice
         },
-        total: calculatePrice()
+        processingFee: processingFee,
+        total: (basePrice * formData.estimatedWeight) + dryCleaningPrice + specialIroningPrice + processingFee
       }
     };
   };

@@ -263,25 +263,10 @@ export function BookingSummary({
 
           <Card>
             <CardContent className="p-6 space-y-4">
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <p className="text-sm">Servicii curățare</p>
-                  <p className="text-sm font-medium">{price.toFixed(2)} lei</p>
-                </div>
-
-                <div className="flex justify-between">
-                  <p className="text-sm">Taxă Procesare</p>
-                  <p className="text-sm font-medium">
-                    {selectedLocation?.pricing?.[filters.lockerSize as keyof typeof selectedLocation.pricing]?.toFixed(2) || 0} lei
-                  </p>
-                </div>
-              </div>
-
-              <Separator />
-
+              
               <div className="flex justify-between">
                 <p className="font-medium">Total</p>
-                <p className="font-bold text-lg">{total.toFixed(2)} lei</p>
+                <p className="font-bold text-lg">{price.toFixed(2)} lei</p>
               </div>
 
               <div className="text-xs text-muted-foreground">
